@@ -727,15 +727,6 @@ def _run_antismash(sequence_file: Optional[str], options: ConfigType) -> int:
     # otherwise we could double annotate some areas
     annotate_records(results)
 
-    # create relevant output files
-    write_outputs(results, options)
-
-    # save profiling data
-    if options.profile:
-        profiler.disable()
-        write_profiling_results(profiler, os.path.join(options.output_dir,
-                                                       "profiling_results"))
-
     running_time = datetime.now() - start_time
 
     # display module runtimes before total time
