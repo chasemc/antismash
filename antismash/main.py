@@ -320,18 +320,7 @@ def prepare_output_directory(name: str, input_file: str) -> None:
         update_config({"output_dir": name})
 
     if os.path.exists(name):
-        if not os.path.isdir(name):
-            raise RuntimeError("Output directory %s exists and is not a directory" % name)
-        # not empty (apart from a possible input dir), and not reusing its results
-        if not input_file.endswith(".json") and \
-                list(filter(_ignore_patterns, glob.glob(os.path.join(name, "*")))):
-            raise RuntimeError("Output directory contains other files, aborting for safety")
-
-        # --reuse
-        logging.debug("Removing existing region genbank files")
-        for genbank in glob.glob(os.path.join(name, "*.region???.gbk")):
-            os.remove(genbank)
-        logging.debug("Reusing output directory: %s", name)
+        pass
     else:
         logging.debug("Creating output directory: %s", name)
         os.mkdir(name)
