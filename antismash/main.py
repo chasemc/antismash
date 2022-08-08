@@ -679,7 +679,6 @@ def _run_antismash(sequence_file: Optional[str], options: ConfigType) -> int:
         print("All prerequisites satisfied")
         return 0
 
-    check_prerequisites(options.all_enabled_modules, options)
 
     # start up profiling if relevant
     if options.profile:
