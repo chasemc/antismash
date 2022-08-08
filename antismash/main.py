@@ -447,12 +447,7 @@ def write_outputs(results: serialiser.AntismashResults, options: ConfigType) -> 
                 record_result[module_name] = result
         module_results_per_record.append(record_result)
 
-    logging.debug("Creating results page")
-    html.write(results.records, module_results_per_record, options, get_all_modules())
-
-    logging.debug("Creating results SVGs")
-    svg.write(options, module_results_per_record)
-
+ 
     # convert records to biopython
     bio_records = [record.to_biopython() for record in results.records]
 
@@ -469,18 +464,6 @@ def write_outputs(results: serialiser.AntismashResults, options: ConfigType) -> 
     combined_filename = base_filename + ".gbk"
     logging.debug("Writing final genbank file to '%s'", combined_filename)
     SeqIO.write(bio_records, combined_filename, "genbank")
-
-    zipfile = base_filename + ".zip"
-    if os.path.exists(zipfile):
-        os.remove(zipfile)
-    if not options.skip_zip_file:
-        logging.debug("Zipping output to '%s'", zipfile)
-        with tempfile.NamedTemporaryFile(prefix="as_zip_tmp", suffix=".zip") as temp:
-            shutil.make_archive(temp.name.replace(".zip", ""), "zip", root_dir=options.output_dir)
-            shutil.copy(temp.name, zipfile)
-            os.chmod(zipfile, 0o644)
-        assert os.path.exists(zipfile)
-
 
 def canonical_base_filename(input_file: str, directory: str, options: ConfigType) -> str:
     """Generate a canonical base filename if one isn't specified in the options."""
